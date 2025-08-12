@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>results</title>
+    <title>Submission form</title>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-    <h2>Responses</h2>
+    <h2>applications</h2>
     <table>
         <tr>
             <th>No.</th>
@@ -16,8 +16,8 @@
             <th>Address</th>
             <th>Introduction</th>
             <th>Diploma</th>
-            <th>Certificate(s)</th>
-            <th>Video(s)</th>
+            <th>Certificate</th>
+            <th>Video</th>
         </tr>
         <?php
     // Connect to the database
@@ -33,8 +33,8 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Query payments table
-    $sql = "SELECT name, phone, address, introduction, diploma, certificate, video FROM payment";
+    // Query application table
+    $sql = "SELECT name, phone, address, introduction, diploma, certificate, video FROM application";
     $result = $conn->query($sql);
 
     // Check for errors
@@ -55,13 +55,13 @@
             echo "<td>".$row["address"]."</td>";
             echo "<td>".$row["introduction"]."</td>";
             echo "<td>".$row["diploma"]."</td>";
-            echo "<td>".$row["certificate(s)"]."</td>";
-            echo "<td>".$row["video(s)"]."</td>";
+            echo "<td>".$row["certificate"]."</td>";
+            echo "<td>".$row["video"]."</td>";
             echo "</tr>";
             $serialNumber++; // Increment serial number for next row
         }
     } else {
-        echo "<tr><td colspan='8'>No payments found</td></tr>";
+        echo "<tr><td colspan='8'>No application found</td></tr>";
     }
     $conn->close();
 ?>

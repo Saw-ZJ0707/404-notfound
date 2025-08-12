@@ -1,254 +1,458 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link
-        href=<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href=<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Cxj Tech</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
-    <title>CxJ Tech</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .text-cxj-blue { color: #1d2e5b; }
+        .bg-cxj-blue { background-color: #1d2e5b; }
+        .hover\:bg-cxj-blue-dark:hover { background-color: #1a274c; }
+
+        .text-cxj-orange { color: #ff5722; }
+        .bg-cxj-orange { background-color: #ff5722; }
+        .hover\:bg-cxj-orange-dark:hover { background-color: #e64a19; }
+
+        .hero-section {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/Gallery/Environment.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Modal Animation Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            visibility: hidden;
+            opacity: 0;
+        }
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: scale(0.95);
+        }
+        .modal-overlay.active .modal-container {
+            transform: scale(1);
+        }
+
+        /* On-Scroll Fade-in Animation Classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Keyframe Animations for Hero Section */
+        @keyframes fadeInSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .hero-title-line {
+            opacity: 0;
+            animation: fadeInSlideUp 1s ease-out forwards;
+        }
+        /* Staggered animation delays for each line of the title */
+        .hero-title-line:nth-child(1) { animation-delay: 0.2s; }
+        .hero-title-line:nth-child(2) { animation-delay: 0.4s; }
+        .hero-title-line:nth-child(3) { animation-delay: 0.6s; }
+
+        /* Keyframe for Golden Jubilee number */
+        @keyframes zoomInBounce {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        .golden-jubilee-number.is-visible {
+            animation: zoomInBounce 1s ease-out;
+        }
+    </style>
 </head>
+<body class="bg-gray-50">
 
-<body>
-    <nav id="nav">
-        <div class="navTop">
-            <div class="navItem">
-                <img src="./img/Contact/logo.png" alt="CXJ TECH" class="logo">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <img src="img/Contact/logo.png" alt="Cxj Tech Logo" class="h-10 w-10">
+                <span class="text-xl font-bold ml-2 text-cxj-blue">Cxj Tech</span>
+                <span class="text-sm font-semibold ml-2 text-cxj-orange">50th</span>
             </div>
-            <div class="navItem">
-                <div class="search">
-                    <input type="text" placeholder="Search..." class="searchInput">
-                    <img src="./img/Contact/search.png" width="20" height="20" alt="" class="searchIcon">
+            
+            <!-- Navigation and Buttons -->
+            <nav class="hidden lg:flex items-center space-x-6">
+                <a href="#" class="text-gray-600 hover:text-cxj-blue font-medium">Contact Us</a>
+                <a href="#" class="text-gray-600 hover:text-cxj-blue font-medium">About Us</a>
+                <a href="#" class="text-gray-600 hover:text-cxj-blue font-medium">Work at Cxj Tech</a>
+            </nav>
+            
+            <!-- Language and Auth Buttons -->
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 hidden lg:flex">
+                     <img src="https://placehold.co/20x15/fff/000?text=MY" alt="Malaysia Flag" class="rounded-sm">
+                    <select class="border border-gray-300 rounded-md p-1 text-sm bg-white">
+                        <option>Language</option>
+                    </select>
                 </div>
+                <a href="admin.php" class="bg-gray-200 text-gray-800 font-semibold px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Admin</a>
+                <button class="bg-gray-200 text-gray-800 font-semibold px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Login</button>
+                <button class="bg-cxj-orange text-white font-semibold px-4 py-2 rounded-lg hover:bg-cxj-orange-dark transition-colors">Register</button>
             </div>
-            <div class="navItem">
-                <span class="limitedOffer" onclick="location.href='admin.php';" style="cursor: pointer;">Admin</span>
+        </div>
+    </header>
 
-            </div>
-        </div>
-        <div class="navBottom">
-            <h3 class="menuItem">HR Department</h3>
-            <h3 class="menuItem">Administration Department</h3>
-            <h3 class="menuItem">Sales Department</h3>
-            <h3 class="menuItem">R&D Department</h3>
-            <h3 class="menuItem">Customer Service Department</h3>
-            <h3 class="menuItem">Project Department</h3>
-            <h3 class="menuItem">IT Department</h3>
-            <h3 class="menuItem">Finance Department</h3>
-            <h3 class="menuItem">Marketing Department</h3>
-            <h3 class="menuItem">Purchasing Department</h3>
-        </div>
-    </nav>
-    <div class="slider">
-        <div class="sliderWrapper">
-            <div class="sliderItem">
-                <img src="./img/Choices/Human.jpg" alt="HR Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">HR Department</h1>
-            </div>
-            <div class="sliderItem">
-                <img src="./img/Choices/administration.jpg" alt="Administration Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">Administration Department</h1>
-            </div>
-            <div class="sliderItem">
-                <img src="./img/Choices/Sales.jpg" alt="Sales Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">Sales Department</h1>
-            </div>
-            <div class="sliderItem">
-                <img src="./img/Choices/RD.jpg" alt="R&amp;D Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">R&amp;D Department</h1>
-            </div>
-            <div class="sliderItem">
-                <img src="./img/Choices/CS.jpg" alt="Customer Service Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">Customer Service Department</h1>
-            </div>
-            <div class="sliderItem">
-                <img src="./img/Choices/Project.jpg" alt="Project Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">Project Department</h1>
-            </div>
-            <div class="sliderItem">
-                <img src="./img/Choices/IT.jpg" alt="IT Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">IT Department</h1>
-            </div>
-            <div class="sliderItem">
-                <img src="./img/Choices/FInance.jpeg" alt="Finance Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">Finance Department</h1>
-            </div>
-            <div class="sliderItem">
-                <img src="./img/Choices/MARKETING.jpg" alt="Marketing Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">Marketing Department</h1>
-            </div>
-            <div class="sliderItem">
-                <img src="./img/Choices/Purchasing.png" alt="Purchasing Department" class="sliderImg">
-                <div class="sliderBg"></div>
-                <h1 class="sliderTitle clickableJob">Purchasing Department</h1>
-            </div>
-        </div>
-    </div>
-   
-    <div class="features">
-        <div class="feature">
-            <img class="featureIcon" src="./img/Icon/return.png" alt="Flexible Work Hours">
-            <span class="featureTitle">Flexible Work Hours</span>
-            <span class="featureDesc">Enjoy a healthy work-life balance with our flexible scheduling.</span>
-        </div>
-        <div class="feature">
-            <img class="featureIcon" src="./img/Icon/gift.png" alt="Employee Recognition">
-            <span class="featureTitle">Employee Recognition</span>
-            <span class="featureDesc">We celebrate your achievements and contributions.</span>
-        </div>
-        <div class="feature">
-            <img class="featureIcon" src="./img/Icon/contact.png" alt="Professional Growth">
-            <span class="featureTitle">Professional Growth</span>
-            <span class="featureDesc">Access training, mentorship, and career advancement opportunities.</span>
-        </div>
-    </div>
-        <div class="product" id="product">
-        <a id="jobSection"></a>
-        <img src="./img/Choices/E.jpg" alt="" class="productImg">
-        <div class="productDetails">
-            <h1 class="productTitle" id="jobTitle">Human_resources</h1>
-            <p class="productDesc">Welcome to our team! Apply now to join this department and start your career with us.</p>
-            <p class="productDesc">Click the button below to apply for the position.</p>
-            <p class="productDesc">We look forward to receiving your application!</p>
-            <button class="productButton">APPLY NOW!</button>
-        </div>
-            <div class="payment">
-                <h1 class="payTitle">Personal Information</h1>
-                <form action="data.php" method="POST">
-                    <label>Name and Surname</label>
-                    <input type="text" name="name" placeholder="John Doe" class="payInput">
-                    <br>
-                    <label>Phone Number</label>
-                    <input type="text" name="phone" placeholder="+6012 345 6781" class="payInput" maxlength="13">
-                    <br>
-                    <label>Address</label>
-                    <input type="text" name="address" placeholder="Elton St 21 22-145" class="payInput">
-                    <br>
-                    <label>Profession</label>
-                    <input type="text" name="profession" class="payInput" placeholder="Your Profession">
-                    <br>
-                    <label>Introduction</label>
-                    <input type="text" name="introduction" class="payInput" placeholder="Brief Introduction" maxlength="100">
-                    <br>
-                    <label>Diploma</label>
-                    <input type="file" name="diploma" class="payInput sm" multiple>
-                    <br>
-                    <label>Certificate(s)</label>
-                    <input type="file" name="certificate" class="payInput sm" multiple>
-                    <br>
-                    <label>Video(s)</label>
-                    <input type="file" name="video" class="payInput sm" multiple>
-                    <br>
-                    <button type="submit" class="payButton">Apply!</button>
-                    <span class="close">X</span>
-                </form>
-            </div>
-        </div>
-    <div class="gallery">
-        <div class="galleryItem">
-            <h1 class="galleryTitle">Collaborative Workspace</h1>
-            <img src="./img/Gallery/hand.jpg" alt="Teamwork in the office" class="galleryImg">
-        </div>
-        <div class="galleryItem">
-            <img src="./img/Gallery/Tree.jpg" alt="Green and inspiring office environment" class="galleryImg">
-            <h1 class="galleryTitle">Inspiring Green Spaces</h1>
-        </div>
-        <div class="galleryItem">
-            <h1 class="galleryTitle">Innovative Work Culture</h1>
-            <img src="./img/Gallery/Team.jpg" alt="Modern workspace and technology" class="galleryImg">
-        </div>
-    </div>
-    <div class="newSeason">
-        <div class="nsItem">
-            <img src="./img/Gallery/image4.png"
-                alt="" class="nsImg">
-        </div>
-            <div class="nsItem">
-            <h3 class="nsTitleSm">CXJ Tech</h1>
-            <h1 class="nsTitle">INNOVATE OUR FUTURE</h1>
-            <a href="#nav">
-                <button class="nsButton">APPLY NOW !</button>
-            </a>
-        </div>
-        <div class="nsItem">
-            <img src="./img/Gallery/image3.png"
-                alt="" class="nsImg">
-        </div>
-    </div>
-    <footer>
-        <div class="footerLeft">
-            <div class="footerMenu">
-                <h1 class="fMenuTitle">About Us</h1>
-                <ul class="fList">
-                    <li class="fListItem">Company</li>
-                    <li class="fListItem">Contact</li>
-                    <li class="fListItem">Careers</li>
-                    <li class="fListItem">Affiliates</li>
-                    <li class="fListItem">Stores</li>
-                </ul>
-            </div>
-            <div class="footerMenu">
-                <h1 class="fMenuTitle">Useful Links</h1>
-                <ul class="fList">
-                    <li class="fListItem">Support</li>
-                    <li class="fListItem">Refund</li>
-                    <li class="fListItem">FAQ</li>
-                    <li class="fListItem">Feedback</li>
-                    <li class="fListItem">Stories</li>
-                </ul>
-            </div>
-            <div class="footerMenu">
-                <h1 class="fMenuTitle">Products</h1>
-                <ul class="fList">
-                    <li class="fListItem">HR Department</li>
-                    <li class="fListItem">Administration Department</li>
-                    <li class="fListItem">Sales Department</li>
-                    <li class="fListItem">R&D Department</li>
-                    <li class="fListItem">Customer Service Department</li>
-                    <li class="fListItem">Project Department</li>
-                    <li class="fListItem">IT Department</li>
-                    <li class="fListItem">Finance Department</li>
-                    <li class="fListItem">Marketing Department</li>
-                    <li class="fListItem">Purchasing Department</li>
-                </ul>
-            </div>
-        </div>
-        <div class="footerRight">
-            <div class="footerRightMenu">
-                <h1 class="fMenuTitle">Subscribe to our channel</h1>
-                <div class="fMail">
-                    <input type="text" placeholder="your@email.com" class="fInput">
-                    <button class="fButton">Join!</button>
+    <!-- Hero Section -->
+    <section class="hero-section text-white flex items-center py-20 lg:py-32">
+        <div class="container mx-auto px-4 flex flex-col lg:flex-row items-start relative z-10">
+            <!-- Left Content -->
+            <div class="max-w-xl mb-12 lg:mb-0">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    <span class="block hero-title-line">We Listen.</span>
+                    <span class="block hero-title-line">We Connect.</span>
+                    <span class="block hero-title-line">We Deliver Success.</span>
+                </h1>
+                <p class="mt-4 text-lg max-w-md animate-on-scroll">
+                    Finding your next job is more than a click. We make it easier with deep industry expertise,
+                    we combine talent and interest with business needs and
+                    deliver, creating your imagined life.
+                </p>
+                <div class="mt-8 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 animate-on-scroll">
+                    <!-- Updated to be a link that jumps to the "Jobs in Our Company" section -->
+                    <a href="#jobs-section" class="bg-white text-cxj-blue font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-gray-100 transition-colors">Looking to hire</a>
                 </div>
             </div>
-            <div class="footerRightMenu">
-                <h1 class="fMenuTitle">Follow Us</h1>
-                <div class="fIcons">
-                    <img src="./img/Contact/Facebook.png" alt="" class="fIcon">
-                    <img src="./img/Contact/instagram.jpeg alt="" class="fIcon">
-                    <img src="./img/Contact/wechat.png" alt="" class="fIcon">
+        </div>
+    </section>
+
+    <!-- Mid-Section Cards -->
+    <section class="bg-gray-50 py-16">
+        <div class="container mx-auto px-4">
+            <!-- New Heading -->
+            <h2 class="text-3xl font-bold text-cxj-blue mb-8 text-center animate-on-scroll">Discover Our Work Environment</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="relative bg-cxj-blue text-white rounded-lg overflow-hidden shadow-lg h-64 flex items-end p-6 group animate-on-scroll">
+                    <img src="img/Gallery/Hi.jpg" alt="A team collaborating and brainstorming with sticky notes on a wall" class="absolute inset-0 w-full h-full object-cover opacity-20 transition-opacity duration-300 group-hover:opacity-30">
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-bold">Collaborative Workplace</h3>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="relative bg-cxj-blue text-white rounded-lg overflow-hidden shadow-lg h-64 flex items-end p-6 group animate-on-scroll">
+                    <img src="img/Gallery/Hi2.jpg" alt="A well-lit and comfortable office space filled with plants" class="absolute inset-0 w-full h-full object-cover opacity-20 transition-opacity duration-300 group-hover:opacity-30">
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-bold">Inspiring Work Space</h3>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="relative bg-cxj-blue text-white rounded-lg overflow-hidden shadow-lg h-64 flex items-end p-6 group animate-on-scroll">
+                    <img src="img/Gallery/Hi3.jpg" alt="A team of people in a meeting room, collaborating around a large screen" class="absolute inset-0 w-full h-full object-cover opacity-20 transition-opacity duration-300 group-hover:opacity-30">
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-bold">Innovative Work Culture</h3>
+                    </div>
                 </div>
             </div>
-            <div class="footerRightMenu">
-                <span class="copyright">@Akmal/Aliah. All rights reserved. 2023.</span>
+        </div>
+    </section>
+
+    <!-- Connecting Professionals Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-8">
+            <!-- Text Content -->
+            <div class="lg:w-1/2 animate-on-scroll">
+                <h2 class="text-3xl font-bold text-cxj-blue mb-4">Connecting Professionals with The Best Organisations in Malaysia</h2>
+                <p class="text-gray-700">Cxj Tech Malaysia is a recruitment consultancy dedicated to connecting organisations with top-tier talent across various disciplines and industries, including <a href="#" class="text-cxj-blue hover:underline">Engineering & Manufacturing</a>, <a href="#" class="text-cxj-blue hover:underline">Sales</a> / <a href="#" class="text-cxj-blue hover:underline">BPO</a> / <a href="#" class="text-cxj-blue hover:underline">GBS</a> / <a href="#" class="text-cxj-blue hover:underline">Accounting & Finance</a> / <a href="#" class="text-cxj-blue hover:underline">Technology & Digital</a> / <a href="#" class="text-cxj-blue hover:underline">Banking & Financial Services</a> / <a href="#" class="text-cxj-blue hover:underline">Chemicals</a> / <a href="#" class="text-cxj-blue hover:underline">Building & Construction</a> / <a href="#" class="text-cxj-blue hover:underline">HR</a> / <a href="#" class="text-cxj-blue hover:underline">Marketing</a> / <a href="#" class="text-cxj-blue hover:underline">Logistics & Supply Chain</a> / <a href="#" class="text-cxj-blue hover:underline">Retail</a>.</p>
+                <p class="text-gray-700 mt-4">We offer a wide range of job vacancies spanning multiple industries, expertise levels and locations, including <a href="#" class="text-cxj-blue hover:underline">Kuala Lumpur</a>, <a href="#" class="text-cxj-blue hover:underline">Penang</a>, <a href="#" class="text-cxj-blue hover:underline">Johor</a> and other key business and industrial areas across Malaysia.</p>
+                <p class="text-gray-700 mt-4">We are a global Specialist Recruitment Consultancy providing recruitment and related services. Since our inception, we have continuously grown and expanded, now operating in 54 locations across 11 countries.</p>
             </div>
+            <!-- Video Embed -->
+            <div class="lg:w-1/2 animate-on-scroll">
+                <video controls class="w-full aspect-video rounded-lg shadow-lg">
+                    <source src="img/466263367690917299.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- Golden Jubilee Section -->
+    <section class="bg-gray-100 py-16">
+        <div class="container mx-auto px-4">
+            <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8 animate-on-scroll">
+                <div class="flex-shrink-0 text-center md:text-left">
+                    <h3 class="text-xl font-bold text-cxj-blue">Golden Jubilee</h3>
+                    <h4 class="text-lg font-semibold text-cxj-blue">Cxj Tech Group</h4>
+                    <p class="text-6xl font-bold text-cxj-orange mt-2 golden-jubilee-number">50<sup class="text-2xl">th</sup></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Buttons Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Button 1 -->
+                <div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <button class="bg-cxj-blue text-white font-semibold px-6 py-3 rounded-lg hover:bg-cxj-blue-dark transition-colors w-full">Interview Guide</button>
+                    <p class="mt-2 text-sm text-gray-500">For Job Seekers</p>
+                </div>
+                <!-- Button 2 -->
+                <div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <button class="bg-cxj-blue text-white font-semibold px-6 py-3 rounded-lg hover:bg-cxj-blue-dark transition-colors w-full">Interview Guide</button>
+                    <p class="mt-2 text-sm text-gray-500">For Hiring Managers</p>
+                </div>
+                <!-- Button 3 -->
+                <div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <button class="bg-cxj-blue text-white font-semibold px-6 py-3 rounded-lg hover:bg-cxj-blue-dark transition-colors w-full">Insights and Advice</button>
+                    <p class="mt-2 text-sm text-gray-500">For Career/Hiring</p>
+                </div>
+                <!-- Button 4 -->
+                <div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <button class="bg-cxj-blue text-white font-semibold px-6 py-3 rounded-lg hover:bg-cxj-blue-dark transition-colors w-full">Work at Cxj Tech</button>
+                    <p class="mt-2 text-sm text-gray-500">Join Our Team</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jobs in Our Company Section -->
+    <section id="jobs-section" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8 animate-on-scroll">
+                <h2 class="text-3xl font-bold text-cxj-blue">Jobs in Our Company</h2>
+                <button class="bg-cxj-orange text-white font-semibold px-6 py-3 rounded-lg hover:bg-cxj-orange-dark transition-colors">View All</button>
+            </div>
+            
+            <!-- Job Listings Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Job Card 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <img src="img/Choices/Human.jpg" alt="HR Department" class="w-full h-32 object-cover mb-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-cxj-blue mb-2">HR Department</h3>
+                    <p class="text-sm text-gray-600 font-bold mb-2">MYR 70,000 - 95,000 (Annual)</p>
+                    <p class="text-sm text-gray-500 mb-4">Responsible for managing employee relations, overseeing recruitment processes, and ensuring company policies are implemented effectively.</p>
+                    <!-- Apply now link with click event -->
+                    <a href="#" class="text-cxj-blue hover:underline font-medium" onclick="openModal()">Apply now</a>
+                </div>
+                <!-- Job Card 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <img src="img/Choices/administration.jpg" alt="Administration Department" class="w-full h-32 object-cover mb-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-cxj-blue mb-2">Administration Department</h3>
+                    <p class="text-sm text-gray-600 font-bold mb-2">MYR 60,000 - 80,000 (Annual)</p>
+                    <p class="text-sm text-gray-500 mb-4">You will provide essential administrative support, manage office operations, and assist with scheduling and correspondence to ensure smooth daily functions.</p>
+                    <!-- Apply now link with click event -->
+                    <a href="#" class="text-cxj-blue hover:underline font-medium" onclick="openModal()">Apply now</a>
+                </div>
+                <!-- Job Card 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <img src="img/Choices/Sales.jpg" alt="Sales Department" class="w-full h-32 object-cover mb-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-cxj-blue mb-2">Sales Department</h3>
+                    <p class="text-sm text-gray-600 font-bold mb-2">MYR 90,000 - 130,000 (Annual)</p>
+                    <p class="text-sm text-gray-500 mb-4">Drive new client acquisition, maintain strong relationships with existing customers, and work towards achieving and exceeding sales targets for the region.</p>
+                    <!-- Apply now link with click event -->
+                    <a href="#" class="text-cxj-blue hover:underline font-medium" onclick="openModal()">Apply now</a>
+                </div>
+                <!-- Job Card 4 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <img src="img/Choices/RD.jpg" alt="R&D Department" class="w-full h-32 object-cover mb-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-cxj-blue mb-2">R&D Department</h3>
+                    <p class="text-sm text-gray-600 font-bold mb-2">MYR 100,000 - 160,000 (Annual)</p>
+                    <p class="text-sm text-gray-500 mb-4">Lead research and development projects to create innovative products and technologies, working in a fast-paced environment to push the boundaries of our industry.</p>
+                    <!-- Apply now link with click event -->
+                    <a href="#" class="text-cxj-blue hover:underline font-medium" onclick="openModal()">Apply now</a>
+                </div>
+                <!-- Job Card 5 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <img src="img/Choices/CS.jpg" alt="Customer Service Department" class="w-full h-32 object-cover mb-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-cxj-blue mb-2">Customer Service Department</h3>
+                    <p class="text-sm text-gray-600 font-bold mb-2">MYR 55,000 - 75,000 (Annual)</p>
+                    <p class="text-sm text-gray-500 mb-4">Serve as the first point of contact for customer inquiries, resolve issues efficiently, and ensure a high level of satisfaction for all of our clients.</p>
+                    <!-- Apply now link with click event -->
+                    <a href="#" class="text-cxj-blue hover:underline font-medium" onclick="openModal()">Apply now</a>
+                </div>
+                <!-- Job Card 6 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <img src="img/Choices/Project.jpg" alt="Project Department" class="w-full h-32 object-cover mb-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-cxj-blue mb-2">Project Department</h3>
+                    <p class="text-sm text-gray-600 font-bold mb-2">MYR 110,000 - 170,000 (Annual)</p>
+                    <p class="text-sm text-gray-500 mb-4">Manage project lifecycles from conception to completion, coordinate with cross-functional teams, and ensure projects are delivered on time and within budget.</p>
+                    <!-- Apply now link with click event -->
+                    <a href="#" class="text-cxj-blue hover:underline font-medium" onclick="openModal()">Apply now</a>
+                </div>
+                <!-- Job Card 7 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <img src="img/Choices/IT.jpg" alt="IT Department" class="w-full h-32 object-cover mb-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-cxj-blue mb-2">IT Department</h3>
+                    <p class="text-sm text-gray-600 font-bold mb-2">MYR 120,000 - 200,000 (Annual)</p>
+                    <p class="text-sm text-gray-500 mb-4">Oversee the company's technical infrastructure, provide internal support, and work on developing new software solutions to improve operational efficiency.</p>
+                    <!-- Apply now link with click event -->
+                    <a href="#" class="text-cxj-blue hover:underline font-medium" onclick="openModal()">Apply now</a>
+                </div>
+                <!-- Job Card 8 -->
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 animate-on-scroll">
+                    <img src="img/Choices/FInance.jpeg" alt="Finance Department" class="w-full h-32 object-cover mb-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-cxj-blue mb-2">Finance Department</h3>
+                    <p class="text-sm text-gray-600 font-bold mb-2">MYR 130,000 - 190,000 (Annual)</p>
+                    <p class="text-sm text-gray-500 mb-4">Manage all financial accounting and reporting, analyze fiscal performance, and develop strategies to ensure the company's financial health and growth.</p>
+                    <!-- Apply now link with click event -->
+                    <a href="#" class="text-cxj-blue hover:underline font-medium" onclick="openModal()">Apply now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-cxj-blue text-white py-12 mt-12 animate-on-scroll">
+        <div class="container mx-auto px-4">
+            <!-- Footer content goes here -->
+            <p class="text-center text-sm">&copy; 2025 Cxj Tech. All Rights Reserved.</p>
         </div>
     </footer>
-    <script src="./app.js"></script>
-</body>
 
+    <!-- Application Modal -->
+    <div id="application-modal" class="modal-overlay">
+        <div class="modal-container">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center pb-3">
+                <h3 class="text-2xl font-semibold text-gray-700">Personal Information</h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            </div>
+            
+            <!-- Modal Body (Form) -->
+            <form action="data.php" method="post" enctype="multipart/form-data" class="space-y-6">
+                <!-- Name and Surname -->
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name and Surname</label>
+                    <input type="text" id="name" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cxj-blue focus:ring-cxj-blue" placeholder="John Doe">
+                </div>
+                
+                <!-- Phone Number -->
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cxj-blue focus:ring-cxj-blue" placeholder="+6012 345 6781">
+                </div>
+                
+                <!-- Address -->
+                <div>
+                    <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                    <input type="text" id="address" name="address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cxj-blue focus:ring-cxj-blue" placeholder="Elton St 21 22-145">
+                </div>
+                
+                <!-- Profession -->
+                <div>
+                    <label for="profession" class="block text-sm font-medium text-gray-700">Profession</label>
+                    <input type="text" id="profession" name="profession" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cxj-blue focus:ring-cxj-blue" placeholder="Your Profession">
+                </div>
+                
+                <!-- Introduction -->
+                <div>
+                    <label for="introduction" class="block text-sm font-medium text-gray-700">Introduction</label>
+                    <textarea id="introduction" name="introduction" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cxj-blue focus:ring-cxj-blue" placeholder="Brief Introduction"></textarea>
+                </div>
+                
+                <!-- File Uploads -->
+                <div class="space-y-4">
+                    <div>
+                        <label for="diploma" class="block text-sm font-medium text-gray-700">Diploma</label>
+                        <input type="file" id="diploma" name="diploma" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
+                    </div>
+                    <div>
+                        <label for="certificates" class="block text-sm font-medium text-gray-700">Certificate(s)</label>
+                        <input type="file" id="certificates" name="certificates" multiple class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
+                    </div>
+                    <div>
+                        <label for="videos" class="block text-sm font-medium text-gray-700">Video(s)</label>
+                        <input type="file" id="videos" name="videos" multiple accept="video/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
+                    </div>
+                </div>
+
+                <!-- Apply Button in Modal -->
+                <div class="mt-8">
+                    <button type="submit" class="w-full bg-cxj-orange text-white font-semibold py-3 rounded-lg hover:bg-cxj-orange-dark transition-colors">Apply!</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Modal functions with animation classes
+        function openModal() {
+            document.getElementById('application-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('application-modal');
+            modal.classList.remove('active');
+        }
+
+        // Intersection Observer for on-scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Special handling for the golden jubilee number
+                    if (entry.target.classList.contains('golden-jubilee-number')) {
+                        entry.target.classList.add('is-visible');
+                    }
+                    observer.unobserve(entry.target); // Stop observing once the element is visible
+                }
+            });
+        }, {
+            threshold: 0.1 // Triggers when 10% of the element is visible
+        });
+
+        // Select all elements with the 'animate-on-scroll' class
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        animatedElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Observe the golden jubilee number specifically for its unique animation
+        const goldenJubileeNumber = document.querySelector('.golden-jubilee-number');
+        if (goldenJubileeNumber) {
+            observer.observe(goldenJubileeNumber);
+        }
+    </script>
+</body>
 </html>
